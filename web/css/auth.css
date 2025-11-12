@@ -1,0 +1,118 @@
+/* =========================================
+   File: /css/auth.css
+   CSS cho trang Đăng nhập & Đăng ký
+   ========================================= */
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    /* 1. Tạo nền gradient xám-trắng tinh tế */
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+    
+    /* 2. Căn giữa hoàn hảo (Ngang + Dọc) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Đảm bảo body cao hết màn hình */
+    margin: 0;
+}
+
+/* 3. Thiết kế lại khung container */
+.login-container {
+    background: #fff;
+    color: #333;
+    max-width: 450px;
+    width: 100%;
+    margin: 20px; /* Thêm margin nhỏ cho vừa màn hình điện thoại */
+    padding: 40px;
+    border-radius: 10px;
+    /* 4. Thêm điểm nhấn màu vàng của trang web */
+    border-top: 4px solid #ffc107;
+    /* 5. Làm bóng đổ (shadow) mềm mại hơn */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.login-container h2 {
+    text-align: center;
+    color: #1a1a1a;
+    font-weight: 700; /* Đậm hơn */
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px; /* Tăng khoảng cách */
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px; /* Tăng padding */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: all 0.3s ease; /* Thêm hiệu ứng */
+}
+
+/* 6. Hiệu ứng đẹp khi click vào ô input */
+.form-group input:focus {
+    outline: none;
+    border-color: #ffc107;
+    box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.2);
+}
+
+.btn-submit {
+    background: #ffc107;
+    color: #000;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+/* 7. Hiệu ứng đẹp khi di chuột vào nút */
+.btn-submit:hover {
+    background: #e0a800; /* Màu đậm hơn */
+    transform: translateY(-2px); /* Nhấc nút lên */
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}
+
+/* 8. Thông báo lỗi đẹp hơn */
+.error {
+    color: #dc3545; /* Màu đỏ đậm */
+    background: #f8d7da; /* Nền hồng nhạt */
+    border: 1px solid #f5c6cb;
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 15px;
+}
+
+/* 9. Style cho link chuyển đổi (Đăng ký / Đăng nhập) */
+.auth-switch {
+     text-align:center; 
+     margin-top: 25px;
+     font-size: 15px;
+     color: #555;
+}
+
+.auth-switch a {
+    color: #ffc107; /* Màu vàng */
+    font-weight: 600;
+    text-decoration: none;
+}
+.auth-switch a:hover {
+    text-decoration: underline;
+}

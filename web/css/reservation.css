@@ -1,0 +1,124 @@
+/* ===== FILE: css/reservation-form.css ===== */
+/* (Dùng để style trang đặt bàn) */
+
+/* Container chính của form */
+.reservation-container {
+    max-width: 800px;
+    margin: 40px auto; /* Căn giữa và tạo khoảng cách */
+    padding: 30px 40px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Đổ bóng nhẹ */
+    border-top: 5px solid #ffc107; /* Thêm điểm nhấn màu vàng */
+}
+
+/* Tiêu đề (THỜI GIAN ĐẶT BÀN, ...) */
+.form-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #104c23; /* Màu xanh đậm (từ style Giới thiệu của bạn) */
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+/* Xóa margin-top cho tiêu đề đầu tiên */
+.reservation-container form h3:first-of-type {
+    margin-top: 0;
+}
+/* Thêm margin-top cho các tiêu đề sau */
+.reservation-container form h3:not(:first-of-type) {
+    margin-top: 35px;
+}
+
+/* Lưới chia cột cho các ô input */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 cột bằng nhau */
+    gap: 22px; /* Khoảng cách giữa các ô */
+}
+
+/* Định nghĩa 1 nhóm (gồm label và input) */
+.form-group {
+    width: 100%;
+}
+
+/* Class để 1 ô chiếm toàn bộ chiều rộng (cho textarea) */
+.form-group.full-width {
+    grid-column: 1 / -1; /* Kéo dài từ cột 1 đến hết */
+}
+
+/* Nhãn (label) của ô input */
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 15px;
+}
+.form-group label i {
+    margin-right: 6px;
+    color: #ffc107; /* Icon màu vàng */
+}
+
+/* CSS chung cho tất cả ô input, select, textarea */
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group input[type="number"],
+.form-group input[type="text"],
+.form-group input[type="tel"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 15px;
+    box-sizing: border-box; /* Quan trọng để padding không làm vỡ layout */
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-family: 'Segoe UI', sans-serif; /* Đảm bảo đồng bộ font */
+}
+
+/* Hiệu ứng khi bấm vào ô input (focus) */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 8px rgba(255,193,7,0.3);
+    outline: none;
+}
+
+.form-group textarea {
+    height: 80px;
+    resize: vertical; /* Cho phép kéo chiều cao */
+}
+
+/* Nút "Gửi đơn đặt bàn" */
+.submit-btn {
+    width: 100%;
+    padding: 13px;
+    background: #ffc107;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 30px;
+    color: #000;
+    transition: background 0.3s;
+}
+.submit-btn:hover {
+    background: #e0a800; /* Màu đậm hơn khi hover */
+}
+
+/* CSS cho thông báo lỗi (từ Servlet) */
+.error-message {
+    color: #dc3545; /* Màu đỏ */
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 15px;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+}
