@@ -13,7 +13,8 @@
   <c:if test="${requestScope.paymentStatus == 'Success'}">
       <h3 class="text-success">🎉 Thanh toán thành công!</h3>
       <p>Mã đơn hàng: <b>${param.vnp_TxnRef}</b></p>
-      <p>Số tiền: <b>${param.vnp_Amount / 100} ₫</b></p>
+      <%-- Hiển thị số tiền đã chia 100 --%>
+      <p>Số tiền: <b><fmt:formatNumber value="${param.vnp_Amount / 100}" type="number" /> ₫</b></p> 
   </c:if>
   
   <c:if test="${requestScope.paymentStatus != 'Success'}">

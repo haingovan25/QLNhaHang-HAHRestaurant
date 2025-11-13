@@ -1,249 +1,256 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Sơ đồ bàn | Restaurant Admin</title>
-  <link rel="stylesheet" href="css/admin-main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    /* ====== PHẦN SƠ ĐỒ BÀN ====== */
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
+    <meta charset="UTF-8">
+    <title>Sơ đồ bàn | Restaurant Admin</title>
+
+    <link rel="stylesheet" href="css/admin-main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+    body {
+        margin: 0;
+        background: #f5f7fb;
+        font-family: Segoe UI, sans-serif;
     }
 
-    .dashboard-header h1 {
-      font-size: 24px;
-      font-weight: 700;
-      color: #1a1a1a;
+    .main-content {
+        padding: 25px 40px;
     }
 
+    .page-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: #1a1a1a;
+    }
+
+    /* ======= LAYOUT ======= */
     .layout-content {
-      display: flex;
-      gap: 20px;
-      margin-top: 10px;
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
     }
 
-    /* KHU VỰC DANH SÁCH KHU VỰC */
+    /* ======= AREA LIST ======= */
     .area-list {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      flex: 0 0 240px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        flex: 0 0 240px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
     }
 
     .area-item {
-      padding: 12px 15px;
-      border-radius: 8px;
-      border: 1px solid #e0e0e0;
-      background: #fff;
-      color: #333;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: 0.2s;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: 0.2s;
+        text-decoration: none;
+        color: #333;
     }
 
     .area-item i {
-      color: #1a4ff7;
+        color: #1a4ff7;
     }
 
-    .area-item.active {
-      background: #e9f0ff;
-      border-color: #1a4ff7;
-      color: #1a4ff7;
-    }
-
+    .area-item.active,
     .area-item:hover {
-      background: #f6f8ff;
+        background: #e9f0ff;
+        border-color: #1a4ff7;
+        color: #1a4ff7;
     }
 
-    /* KHU VỰC DANH SÁCH BÀN */
+    /* ======= TABLE LIST ======= */
     .table-list {
-      flex: 1;
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 20px;
-      align-content: flex-start;
+        flex: 1;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 20px;
     }
 
+    /* ======= TABLE CARD ======= */
     .table-card {
-      border: 1px solid #eee;
-      border-radius: 10px;
-      padding: 15px;
-      text-align: center;
-      background: #fff8e6;
-      color: #333;
-      transition: 0.25s;
-      cursor: pointer;
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        transition: .25s;
+        text-decoration: none;
+        border-bottom: 4px solid #ccc;
+        background: #fff;
     }
 
     .table-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+        transform: translateY(-3px);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.08);
     }
 
-    .table-card .table-number {
-      background: #ffc107;
-      border-radius: 6px;
-      color: #000;
-      font-weight: 700;
-      font-size: 18px;
-      width: 40px;
-      height: 40px;
-      line-height: 40px;
-      margin: 0 auto 6px;
+    .table-card .table-icon {
+        font-size: 30px;
+        margin-bottom: 8px;
     }
 
-    .table-card .table-status {
-      font-size: 14px;
-      color: #666;
+    .table-name {
+        font-size: 16px;
+        margin-bottom: 6px;
+        font-weight: 700;
     }
 
-    /* FOOTER */
-    .footer {
-      text-align: center;
-      color: #888;
-      font-size: 13px;
-      margin-top: 25px;
+    .table-status {
+        font-size: 13px;
+        color: #555;
+        font-weight: 500;
     }
-    .footer a {
-      color: #1a4ff7;
-      text-decoration: none;
+
+    .table-capacity {
+        font-size: 12px;
+        color: #666;
+        margin-top: 4px;
     }
-  </style>
+
+    /* ======= STATUS COLORS ======= */
+    .table-card[data-status="Available"] { border-bottom-color: #28a745; }
+    .table-card[data-status="Available"] .table-icon { color: #28a745; }
+
+    .table-card[data-status="Occupied"] {
+        border-bottom-color: #dc3545;
+        background: #fff6f6;
+    }
+    .table-card[data-status="Occupied"] .table-icon { color: #dc3545; }
+
+    .table-card[data-status="Reserved"] {
+        border-bottom-color: #ffc107;
+        background: #fffcf0;
+    }
+    .table-card[data-status="Reserved"] .table-icon { color: #e6b100; }
+
+    /* Disabled */
+    .disabled {
+        opacity: .6;
+        background: #f2f2f2 !important;
+        cursor: not-allowed;
+    }
+
+    .disabled:hover {
+        transform: none;
+        box-shadow: none;
+    }
+</style>
+
 </head>
-
 <body>
+
 <div class="layout">
-  <!-- ===== SIDEBAR ===== -->
-  <%@ include file="sidebar.jsp" %>
 
+    <%@ include file="sidebar.jsp" %>
 
-  <!-- ===== MAIN CONTENT ===== -->
-  <main class="main">
-    <header class="header">
-      <div class="menu-toggle"><i class="fa fa-bars"></i></div>
-      <div class="search">
-        <input type="text" placeholder="Tìm kiếm...">
-        <i class="fa fa-search"></i>
-      </div>
+    <main class="main">
 
-      <div class="user">
-        <div class="user-info" id="userMenuToggle">
-          <img src="https://i.imgur.com/4M34hi2.png" alt="avatar">
-          <span>Hồ Anh Hòa <i class="fa fa-chevron-down"></i></span>
+        <%@ include file="header-admin.jsp" %>
+
+        <div class="main-content">
+
+            <div class="page-title">${pageTitle}</div>
+
+            <div class="layout-content">
+
+                <!-- ==== LIST AREA ==== -->
+                <div class="area-list">
+
+                    <c:forEach var="area" items="${areaList}">
+                        <a href="admin-table-layout?area=${area}&bookingId=${bookingId}"
+                           class="area-item ${area == activeArea ? 'active' : ''}">
+
+                            <c:choose>
+                                <c:when test="${area.contains('Tầng')}"><i class="fa fa-building"></i></c:when>
+                                <c:when test="${area.contains('Sân')}"><i class="fa fa-tree"></i></c:when>
+                                <c:otherwise><i class="fa fa-location-dot"></i></c:otherwise>
+                            </c:choose>
+
+                            ${area}
+                        </a>
+                    </c:forEach>
+
+                </div>
+
+                <!-- ==== LIST TABLES ==== -->
+                <div class="table-list">
+
+                    <c:forEach var="t" items="${tableList}">
+
+                        <!-- Default -->
+                        <c:set var="link" value="#" />
+                        <c:set var="disabled" value="" />
+                        <c:set var="onclick" value="" />
+
+                        <!-- Nếu đang CHỌN BÀN CHO BOOKING -->
+                        <c:if test="${not empty bookingId}">
+
+                            <!-- Bàn trống -->
+                            <c:if test="${t.status == 'Available'}">
+                                <c:set var="link" value="admin-assign-table?bookingId=${bookingId}&tableId=${t.id}" />
+                                <c:set var="onclick" value="return confirm('Chọn ${t.name}?');" />
+                            </c:if>
+
+                            <!-- Không trống -->
+                            <c:if test="${t.status != 'Available'}">
+                                <c:set var="disabled" value="disabled" />
+                                <c:set var="onclick" value="alert('Bàn đang ${t.status}, không thể chọn'); return false;" />
+                            </c:if>
+
+                        </c:if>
+
+                        <a href="${link}"
+                           onclick="${onclick}"
+                           class="table-card ${disabled}"
+                           data-status="${t.status}">
+
+                            <div class="table-icon">
+                                <c:choose>
+                                    <c:when test="${t.status == 'Available'}"><i class="fa fa-circle-check"></i></c:when>
+                                    <c:when test="${t.status == 'Occupied'}"><i class="fa fa-circle-xmark"></i></c:when>
+                                    <c:when test="${t.status == 'Reserved'}"><i class="fa fa-circle-pause"></i></c:when>
+                                    <c:otherwise><i class="fa fa-circle-question"></i></c:otherwise>
+                                </c:choose>
+                            </div>
+
+                            <div class="table-name">${t.name}</div>
+                            <div class="table-status">${t.status}</div>
+                            <div class="table-capacity">${t.capacity} khách</div>
+
+                        </a>
+
+                    </c:forEach>
+
+                    <c:if test="${empty tableList}">
+                        <p>Không có bàn nào trong khu vực này.</p>
+                    </c:if>
+
+                </div>
+            </div>
         </div>
 
-        <ul class="dropdown-menu" id="userDropdown">
-          <li><a href="#">Hồ sơ cá nhân</a></li>
-          <li><a href="admin-login.jsp">Đăng xuất</a></li>
-        </ul>
-      </div>
-    </header>
-
-    <!-- ====== SƠ ĐỒ BÀN ====== -->
-    <section class="dashboard">
-      <div class="dashboard-header">
-        <h1>Sơ đồ bàn</h1>
-      </div>
-
-      <div class="layout-content">
-        <!-- DANH SÁCH KHU VỰC -->
-        <div class="area-list">
-          <div class="area-item active">
-            <i class="fa fa-location-dot"></i> Sảnh chính
-          </div>
-          <div class="area-item">
-            <i class="fa fa-tree"></i> Sân ngoài
-          </div>
-        </div>
-
-        <!-- DANH SÁCH BÀN -->
-        <div class="table-list">
-          <div class="table-card">
-            <div class="table-number">1</div>
-            <div class="table-status">Bàn trống</div>
-          </div>
-          <div class="table-card">
-            <div class="table-number">2</div>
-            <div class="table-status">Bàn trống</div>
-          </div>
-          <div class="table-card">
-            <div class="table-number">3</div>
-            <div class="table-status">Bàn trống</div>
-          </div>
-          <div class="table-card">
-            <div class="table-number">4</div>
-            <div class="table-status">Bàn trống</div>
-          </div>
-          <div class="table-card">
-            <div class="table-number">5</div>
-            <div class="table-status">Bàn trống</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer">
-        © Copyright <b>HAH - Admin</b>. All Rights Reserved <br>
-        Designed by <a href="#">HAH</a>
-      </div>
-    </section>
-  </main>
+    </main>
 </div>
 
-<!-- ===== JS FUNCTIONALITY ===== -->
-<script>
-// Sidebar toggle
-document.querySelector(".menu-toggle").addEventListener("click", () => {
-  document.querySelector(".sidebar").classList.toggle("hide");
-});
-
-// Submenu toggle
-document.querySelectorAll(".has-sub > a").forEach(link => {
-  link.addEventListener("click", e => {
-    e.preventDefault();
-    const parent = link.parentElement;
-    const submenu = parent.querySelector(".submenu");
-    const icon = link.querySelector(".fa-angle-right, .fa-angle-down");
-    parent.classList.toggle("active");
-    submenu.classList.toggle("open");
-    if (icon) {
-      icon.classList.toggle("fa-angle-down");
-      icon.classList.toggle("fa-angle-right");
-    }
-  });
-});
-
-// Dropdown user
-const userToggle = document.getElementById("userMenuToggle");
-const userDropdown = document.getElementById("userDropdown");
-userToggle.addEventListener("click", (e) => {
-  e.stopPropagation();
-  userDropdown.classList.toggle("show");
-});
-document.addEventListener("click", () => userDropdown.classList.remove("show"));
-
-// Kích hoạt khu vực
-document.querySelectorAll(".area-item").forEach(item => {
-  item.addEventListener("click", () => {
-    document.querySelectorAll(".area-item").forEach(i => i.classList.remove("active"));
-    item.classList.add("active");
-  });
-});
-</script>
 </body>
 </html>

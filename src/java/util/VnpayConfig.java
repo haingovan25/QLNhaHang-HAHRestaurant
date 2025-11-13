@@ -25,7 +25,7 @@ public class VnpayConfig {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     
     // (Đảm bảo tên project là HAH-Restaurant)
-    public static String vnp_ReturnUrl = "http://localhost:8080/HAH-Restaurant/vnpay-return"; 
+    public static String vnp_ReturnUrl = "http://localhost:9999/QLNhaHang/vnpay-return"; 
     
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 

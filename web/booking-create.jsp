@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -6,10 +8,7 @@
     <meta charset="UTF-8">
     <title>Tạo đơn đặt bàn</title>
 
-    <!-- CSS CHUNG -->
     <link href="css/admin-main.css" rel="stylesheet" type="text/css"/>
-
-    <!-- ICON -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
@@ -19,10 +18,7 @@
             font-family: Segoe UI, sans-serif;
         }
 
-        /* ==== MAIN CONTENT ==== */
         .main-content {
-            margin-left: 260px;    /* khớp sidebar */
-            margin-top: 80px;      /* khớp header */
             padding: 25px 40px;
         }
 
@@ -30,33 +26,46 @@
             font-size: 26px;
             font-weight: 700;
             margin-bottom: 20px;
+            color: #1a1a1a;
         }
 
         .form-box {
             background: #fff;
-            padding: 28px;
+            padding: 28px 35px;
             border-radius: 14px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            max-width: 780px;
         }
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: #333;
         }
 
-        input, select {
+        input[type="text"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        select {
             width: 100%;
-            padding: 10px 14px;
+            padding: 12px 14px;
             border-radius: 8px;
             border: 1px solid #ccc;
             font-size: 15px;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #1a4ff7;
+            box-shadow: 0 0 0 3px rgba(26, 79, 247, 0.1);
+            outline: none;
         }
 
         .row-2 {
@@ -64,104 +73,118 @@
             gap: 20px;
         }
 
+        .row-2 > .form-group {
+            flex: 1;
+        }
+
         .submit-btn {
             background: #1a4ff7;
             color: white;
-            padding: 12px 18px;
+            padding: 12px 20px;
             border-radius: 8px;
             font-size: 15px;
             border: none;
             cursor: pointer;
-            margin-top: 10px;
+            font-weight: 600;
+            transition: all 0.2s ease;
         }
 
         .submit-btn:hover {
             background: #0f38c8;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #dc3545;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
     </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<%@ include file="sidebar.jsp" %>
+<div class="layout">
 
-<!-- HEADER -->
-<%@ include file="header-admin.jsp" %>
+    <%@ include file="sidebar.jsp" %>
 
-<!-- MAIN CONTENT -->
-<div class="main-content">
+    <!-- PHẢI ĐẶT HEADER TRONG .main -->
+    <main class="main">
 
-    <div class="page-title">Tạo đơn đặt bàn</div>
+        <%@ include file="header-admin.jsp" %>
 
-    <div class="form-box">
+        <div class="main-content">
 
-        <form action="#" method="post">
+            <div class="page-title">Tạo đơn đặt bàn</div>
 
-            <!-- Tên khách + Số điện thoại -->
-            <div class="row-2">
-                <div class="form-group" style="flex:1;">
-                    <label>Họ tên khách hàng</label>
-                    <input type="text" placeholder="Nhập họ tên...">
-                </div>
+            <div class="form-box">
 
-                <div class="form-group" style="flex:1;">
-                    <label>Số điện thoại</label>
-                    <input type="text" placeholder="Nhập số điện thoại...">
-                </div>
+                <c:if test="${not empty error}">
+                    <p class="error-message">${error}</p>
+                </c:if>
+
+                <form action="admin-booking-create" method="POST">
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label for="customerName">Họ tên khách hàng</label>
+                            <input type="text" id="customerName" name="customerName" placeholder="Nhập họ tên..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Số điện thoại</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Nhập số điện thoại..." required>
+                        </div>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label for="bookingDate">Ngày đặt</label>
+                            <input type="date" id="bookingDate" name="bookingDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bookingTime">Giờ đặt</label>
+                            <input type="time" id="bookingTime" name="bookingTime" required>
+                        </div>
+                    </div>
+
+                    <div class="row-2">
+                        <div class="form-group">
+                            <label for="numPeople">Số khách</label>
+                            <input type="number" id="numPeople" name="numPeople" min="1" placeholder="Nhập số khách..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Trạng thái</label>
+                            <select id="status" name="status">
+                                <option value="Pending">Chưa nhận bàn (Pending)</option>
+                                <option value="Confirmed">Đã nhận bàn (Confirmed)</option>
+                                <option value="Completed">Đã hoàn thành (Completed)</option>
+                                <option value="Canceled">Đã hủy (Canceled)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="note">Ghi chú (nếu có)</label>
+                        <input type="text" id="note" name="note" placeholder="Ví dụ: Cần ghế trẻ em...">
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fa fa-check"></i> Xác nhận đặt bàn
+                    </button>
+
+                </form>
+
             </div>
 
-            <!-- Thời gian -->
-            <div class="row-2">
-                <div class="form-group" style="flex:1;">
-                    <label>Ngày đặt</label>
-                    <input type="date">
-                </div>
+        </div>
 
-                <div class="form-group" style="flex:1;">
-                    <label>Giờ (ví dụ: 8 - 10 giờ)</label>
-                    <input type="text" placeholder="Nhập giờ...">
-                </div>
-            </div>
-
-            <!-- Số khách -->
-            <div class="form-group">
-                <label>Số khách</label>
-                <input type="number" min="1" placeholder="Nhập số khách...">
-            </div>
-
-            <!-- Khu vực -->
-            <div class="form-group">
-                <label>Khu vực</label>
-                <select>
-                    <option>Sảnh chính</option>
-                    <option>Sảnh phụ</option>
-                    <option>VIP</option>
-                </select>
-            </div>
-
-            <!-- Bàn -->
-            <div class="form-group">
-                <label>Chọn bàn</label>
-                <select>
-                    <option>Bàn 1</option>
-                    <option>Bàn 2</option>
-                    <option>Bàn 3</option>
-                </select>
-            </div>
-
-            <!-- Tiền cọc -->
-            <div class="form-group">
-                <label>Đặt cọc (nếu có)</label>
-                <input type="text" placeholder="0 đ">
-            </div>
-
-            <button class="submit-btn">
-                <i class="fa fa-check"></i> Xác nhận đặt bàn
-            </button>
-
-        </form>
-    </div>
+    </main>
 
 </div>
 

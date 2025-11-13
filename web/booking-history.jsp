@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -6,10 +8,7 @@
     <meta charset="UTF-8">
     <title>Lịch sử đặt bàn</title>
 
-    <!-- CSS CHUNG CỦA ADMIN -->
     <link href="css/admin-main.css" rel="stylesheet" type="text/css"/>
-
-    <!-- ICON -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
@@ -20,20 +19,17 @@
             font-family: "Segoe UI", sans-serif;
         }
 
-        /* ==== MAIN CONTENT ==== */
         .main-content {
-            margin-left: 260px;        /* khớp sidebar */
             padding: 25px 40px;
-            margin-top: 80px;          /* khớp header */
         }
 
         .page-title {
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 25px;
+            color: #1a1a1a;
         }
 
-        /* ==== WHITE BOX ==== */
         .content-box {
             background: white;
             padding: 25px;
@@ -41,7 +37,6 @@
             box-shadow: 0 3px 10px rgba(0,0,0,0.06);
         }
 
-        /* ==== TOP BUTTON ==== */
         .create-btn {
             background: #1a4ff7;
             color: #fff;
@@ -52,13 +47,11 @@
             gap: 6px;
             text-decoration: none;
             font-size: 14px;
-            margin-bottom: 15px;
             font-weight: 500;
         }
 
         .create-btn:hover { background: #0f38c8; }
 
-        /* ==== TABS ==== */
         .tabs {
             display: flex;
             gap: 25px;
@@ -81,22 +74,34 @@
             font-weight: 600;
         }
 
-        /* ==== FILTER ==== */
         .filter-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        .filter-row input, 
-        .filter-row select {
+        .filter-left { display: flex; align-items: center; gap: 20px; }
+
+        .search-form { display: flex; gap: 8px; }
+
+        .search-form input {
             padding: 8px 12px;
             border: 1px solid #ccc;
             border-radius: 8px;
             font-size: 14px;
+            width: 250px;
         }
 
-        /* ==== TABLE ==== */
+        .search-form button {
+            background: #1a4ff7;
+            color: white;
+            border: none;
+            padding: 0 14px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -117,120 +122,192 @@
 
         tr:hover { background: #f9fbff; }
 
-        /* ==== STATUS ==== */
         .status {
             padding: 6px 14px;
             border-radius: 16px;
             font-weight: 600;
             font-size: 13px;
         }
+        .st-success  { background: #d4edda;   color: #1e7e34; }
+        .st-wait     { background: #ffeeba;   color: #8a6d3b; }
+        .st-canceled { background: #f8d7da;   color: #721c24; }
+        .st-confirmed{ background: #d1ecf1;   color: #0c5460; }
 
-        .st-success { background: #d4edda; color: #1e7e34; }
-        .st-wait { background: #ffeeba; color: #8a6d3b; }
-
-        /* ==== DETAIL BUTTON ==== */
-        .btn-detail {
-            background: #198754;
-            color: white;
-            padding: 7px 14px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 13px;
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 25px;
         }
+
+        .pagination a {
+            color: #1a4ff7;
+            text-decoration: none;
+            padding: 8px 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .pagination a.active {
+            background: #1a4ff7;
+            color: white;
+            border-color: #1a4ff7;
+        }
+
+        .pagination a.disabled {
+            color: #999;
+            pointer-events: none;
+            background: #f9f9f9;
+        }
+
     </style>
 </head>
 
 <body>
 
-<!-- ========== SIDEBAR ========= -->
-<%@ include file="sidebar.jsp" %>
+<div class="layout">
 
-<!-- ========== HEADER ========= -->
-<%@ include file="header-admin.jsp" %>
+    <%@ include file="sidebar.jsp" %>
 
+    <main class="main">
 
-<!-- ========== PAGE CONTENT ========= -->
-<div class="main-content">
+        <%@ include file="header-admin.jsp" %>
 
-    <div class="page-title">Lịch sử đặt bàn</div>
+        <div class="main-content">
 
-    <div class="content-box">
+            <div class="page-title">Lịch sử đặt bàn</div>
 
-        <a href="booking-create.jsp" class="create-btn">
-            <i class="fa fa-plus"></i> Tạo đơn đặt bàn
-        </a>
+            <div class="content-box">
 
-        <!-- Tabs -->
-        <div class="tabs">
-            <a class="active">Tất cả</a>
-            <a>Chưa nhận bàn</a>
-            <a>Đã nhận bàn</a>
-            <a>Đã hủy</a>
-            <a>Đã hoàn thành</a>
-        </div>
+                <div class="filter-row">
+                    <div class="filter-left">
+                        <a href="admin-booking-create" class="create-btn">
+                            <i class="fa fa-plus"></i> Tạo đơn đặt bàn
+                        </a>
+                    </div>
 
-        <!-- Filter -->
-        <div class="filter-row">
-            <div>
-                Hiển thị 
-                <select>
-                    <option>10</option>
-                    <option>25</option>
-                    <option>50</option>
-                </select>
+                    <form action="admin-booking-history" method="GET" class="search-form">
+                        <input type="hidden" name="status" value="${activeTab}">
+                        <input type="text" name="searchKey" value="${searchKey}" placeholder="Tìm theo tên, SĐT...">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+
+                <div class="tabs">
+                    <a href="admin-booking-history?status=all&searchKey=${searchKey}"
+                       class="${activeTab == 'all' ? 'active' : ''}">Tất cả</a>
+
+                    <a href="admin-booking-history?status=Pending&searchKey=${searchKey}"
+                       class="${activeTab == 'Pending' ? 'active' : ''}">Chưa nhận bàn</a>
+
+                    <a href="admin-booking-history?status=Confirmed&searchKey=${searchKey}"
+                       class="${activeTab == 'Confirmed' ? 'active' : ''}">Đã nhận bàn</a>
+
+                    <a href="admin-booking-history?status=Canceled&searchKey=${searchKey}"
+                       class="${activeTab == 'Canceled' ? 'active' : ''}">Đã hủy</a>
+
+                    <a href="admin-booking-history?status=Completed&searchKey=${searchKey}"
+                       class="${activeTab == 'Completed' ? 'active' : ''}">Đã hoàn thành</a>
+                </div>
+
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Dự kiến nhận bàn</th>
+                        <th>Khách hàng</th>
+                        <th>Số khách</th>
+                        <th>Khu vực/Bàn</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <c:forEach var="b" items="${bookingList}">
+                        <tr>
+                            <td>
+                                <fmt:formatDate value="${b.bookingDate}" pattern="dd/MM/yyyy"/> 
+                                (<fmt:formatDate value="${b.bookingTime}" pattern="HH:mm"/>)
+                            </td>
+
+                            <td>${b.customerName}<br>${b.phone}</td>
+
+                            <td>${b.numPeople}</td>
+
+                            <td>
+                                <c:if test="${empty b.assignedTableName}">(Chưa có)</c:if>
+                                <c:if test="${not empty b.assignedTableName}">${b.assignedTableName}</c:if>
+                            </td>
+
+                            <td>
+                                <c:choose>
+                                    <c:when test="${b.status == 'Completed'}">
+                                        <span class="status st-success">Đã hoàn thành</span>
+                                    </c:when>
+                                    <c:when test="${b.status == 'Pending'}">
+                                        <span class="status st-wait">Chưa nhận bàn</span>
+                                    </c:when>
+                                    <c:when test="${b.status == 'Canceled'}">
+                                        <span class="status st-canceled">Đã hủy</span>
+                                    </c:when>
+                                    <c:when test="${b.status == 'Confirmed'}">
+                                        <span class="status st-confirmed">Đã nhận bàn</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="status">${b.status}</span>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+
+                        </tr>
+                    </c:forEach>
+
+                    <c:if test="${empty bookingList}">
+                        <tr><td colspan="6">Không tìm thấy đơn đặt bàn nào.</td></tr>
+                    </c:if>
+
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+
+                    <a href="admin-booking-history?status=${activeTab}&page=1&searchKey=${searchKey}"
+                       class="${currentPage == 1 ? 'disabled' : ''}">
+                        <i class="fa fa-backward"></i>
+                    </a>
+
+                    <a href="admin-booking-history?status=${activeTab}&page=${currentPage - 1}&searchKey=${searchKey}"
+                       class="${currentPage == 1 ? 'disabled' : ''}">
+                        <i class="fa fa-chevron-left"></i>
+                    </a>
+
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <a href="admin-booking-history?status=${activeTab}&page=${i}&searchKey=${searchKey}"
+                           class="${currentPage == i ? 'active' : ''}">
+                            ${i}
+                        </a>
+                    </c:forEach>
+
+                    <a href="admin-booking-history?status=${activeTab}&page=${currentPage + 1}&searchKey=${searchKey}"
+                       class="${currentPage == totalPages ? 'disabled' : ''}">
+                        <i class="fa fa-chevron-right"></i>
+                    </a>
+
+                    <a href="admin-booking-history?status=${activeTab}&page=${totalPages}&searchKey=${searchKey}"
+                       class="${currentPage == totalPages ? 'disabled' : ''}">
+                        <i class="fa fa-forward"></i>
+                    </a>
+
+                </div>
+
             </div>
 
-            <input type="text" placeholder="Nhập từ khóa tìm kiếm...">
         </div>
 
-        <!-- TABLE -->
-        <table>
-            <thead>
-            <tr>
-                <th>Dự kiến nhận bàn</th>
-                <th>Khách hàng</th>
-                <th>Đặt cọc</th>
-                <th>Số khách</th>
-                <th>Khu vực/Bàn</th>
-                <th>Trạng thái</th>
-                <th></th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr>
-                <td>02/06/2023 (8 - 10 giờ)</td>
-                <td>Hồ Anh Hòa <br> 0865787333</td>
-                <td>0 đ</td>
-                <td>3</td>
-                <td>Sảnh chính, bàn 2</td>
-                <td><span class="status st-success">Đã hoàn thành</span></td>
-                <td><a class="btn-detail">Chi tiết</a></td>
-            </tr>
-
-            <tr>
-                <td>02/06/2023 (8 - 10 giờ)</td>
-                <td>Hồ Anh Hòa <br> 0865787333</td>
-                <td>0 đ</td>
-                <td>3</td>
-                <td>Sảnh phụ, bàn 1</td>
-                <td><span class="status st-wait">Chưa nhận bàn</span></td>
-                <td><a class="btn-detail">Chi tiết</a></td>
-            </tr>
-
-            <tr>
-                <td>02/06/2023 (10 - 12 giờ)</td>
-                <td>Nguyễn Văn Tài <br> 0912345678</td>
-                <td>50.000 đ</td>
-                <td>4</td>
-                <td>VIP, bàn 3</td>
-                <td><span class="status st-wait">Chưa nhận bàn</span></td>
-                <td><a class="btn-detail">Chi tiết</a></td>
-            </tr>
-            </tbody>
-        </table>
-
-    </div>
+    </main>
 
 </div>
 

@@ -74,25 +74,7 @@
 
   <!-- MAIN -->
   <main class="main">
-    <header class="header">
-      <div class="menu-toggle"><i class="fa fa-bars"></i></div>
-      <div class="search">
-        <input type="text" placeholder="Tìm kiếm...">
-        <i class="fa fa-search"></i>
-      </div>
-
-      <div class="user">
-        <div class="user-info" id="userMenuToggle">
-          <img src="https://i.imgur.com/4M34hi2.png" alt="avatar">
-          <span>Hồ Anh Hòa <i class="fa fa-chevron-down"></i></span>
-        </div>
-
-        <ul class="dropdown-menu" id="userDropdown">
-          <li><a href="#">Hồ sơ cá nhân</a></li>
-          <li><a href="login.jsp" id="logoutBtn">Đăng xuất</a></li>
-        </ul>
-      </div>
-    </header>
+    <%@ include file="header-admin.jsp" %>
 
     <section class="dashboard">
       <h1>Dashboard</h1>

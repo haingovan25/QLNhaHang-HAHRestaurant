@@ -327,4 +327,25 @@ public class OrderDAO {
             closeConnections();
         }
     }
+    
+    public Order getOrderByBookingId(int bookingId) {
+        String query = "SELECT id FROM Orders WHERE booking_id = ?";
+        try {
+            conn = DBConnection.getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, bookingId);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                int orderId = rs.getInt("id");
+                // Tái sử dụng hàm getOrderById (đã bao gồm chi tiết món ăn)
+                return getOrderById(orderId); 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeConnections();
+        }
+        return null; // Không có Order nào gắn với Booking này
+    }
 }

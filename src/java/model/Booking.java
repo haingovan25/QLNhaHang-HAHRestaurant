@@ -14,6 +14,7 @@ public class Booking {
     private String note;
     private String status;
     private Timestamp createdAt;
+    private String assignedTableName;
 
     public Booking() {}
 
@@ -49,4 +50,11 @@ public class Booking {
     public void setStatus(String status) { this.status = status; }
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
+    public String getAssignedTableName() {
+        return assignedTableName;
+    }
+
+    public void setAssignedTableName(String assignedTableName) {
+        this.assignedTableName = assignedTableName;
+    }
 }
